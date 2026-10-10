@@ -5,7 +5,7 @@ secciones, detectar choques de horario y **compartir o imprimir** el horario res
 **mobile-first**, con el celular como caso principal.
 
 - **Stack:** Vue 3 (Composition API, `<script setup>`) + Vite. JavaScript plano.
-- **Tema:** plantilla [Mazer](https://github.com/zuramai/mazer) (Bootstrap 5), con modo claro/oscuro.
+- **Tema:** [Bootstrap 6](https://getbootstrap.com/docs/6.0/) (alpha), compilado desde Sass (`resources/css/app.scss`), con modo claro/oscuro.
 - **Estado:** singleton en `src/composables/useProjectState.js` (selección sincronizada con la URL y `localStorage`).
 
 ## Requisitos

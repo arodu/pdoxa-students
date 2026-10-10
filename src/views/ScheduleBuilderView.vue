@@ -87,43 +87,43 @@ onMounted(() => {
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 d-print-none">
                 <h6 class="mb-0 text-truncate fw-bold">{{ t('appTitle') }}</h6>
                 <div class="header-actions d-flex gap-2">
-                    <button @click="shareSchedule" :aria-label="t('share')" class="btn btn-sm btn-light rounded-pill shadow-sm" :title="t('share')">
-                        <i class="bi bi-share"></i><span class="d-none d-lg-inline ms-1">{{ copied ? t('copied') : t('share') }}</span>
+                    <button @click="shareSchedule" :aria-label="t('share')" class="btn btn-sm btn-subtle rounded-pill shadow-sm" :title="t('share')">
+                        <i class="bi bi-share"></i><span class="d-none lg:d-inline ms-1">{{ copied ? t('copied') : t('share') }}</span>
                     </button>
-                    <button @click="downloadImage" :aria-label="t('image')" class="btn btn-sm btn-light rounded-pill shadow-sm" :title="t('image')">
-                        <i class="bi bi-image"></i><span class="d-none d-lg-inline ms-1">{{ t('image') }}</span>
+                    <button @click="downloadImage" :aria-label="t('image')" class="btn btn-sm btn-subtle rounded-pill shadow-sm" :title="t('image')">
+                        <i class="bi bi-image"></i><span class="d-none lg:d-inline ms-1">{{ t('image') }}</span>
                     </button>
-                    <button @click="printSchedule" :aria-label="t('print')" class="btn btn-sm btn-light rounded-pill shadow-sm" :title="t('print')">
-                        <i class="bi bi-printer"></i><span class="d-none d-lg-inline ms-1">{{ t('print') }}</span>
+                    <button @click="printSchedule" :aria-label="t('print')" class="btn btn-sm btn-subtle rounded-pill shadow-sm" :title="t('print')">
+                        <i class="bi bi-printer"></i><span class="d-none lg:d-inline ms-1">{{ t('print') }}</span>
                     </button>
-                    <button @click="toggleDarkMode" :aria-label="isDarkMode ? t('light') : t('dark')" :aria-pressed="isDarkMode ? 'true' : 'false'" class="btn btn-sm btn-primary rounded-pill shadow-sm" :title="isDarkMode ? t('light') : t('dark')">
-                        <i :class="isDarkMode ? 'bi bi-sun' : 'bi bi-moon-stars'"></i><span class="d-none d-lg-inline ms-1">{{ isDarkMode ? t('light') : t('dark') }}</span>
+                    <button @click="toggleDarkMode" :aria-label="isDarkMode ? t('light') : t('dark')" :aria-pressed="isDarkMode ? 'true' : 'false'" class="btn btn-sm btn-solid theme-primary rounded-pill shadow-sm" :title="isDarkMode ? t('light') : t('dark')">
+                        <i :class="isDarkMode ? 'bi bi-sun' : 'bi bi-moon-stars'"></i><span class="d-none lg:d-inline ms-1">{{ isDarkMode ? t('light') : t('dark') }}</span>
                     </button>
                 </div>
             </div>
         </div>
 
-        <div class="page-content print-main-content container-fluid pt-1 px-2 px-lg-3 pb-3 d-flex flex-column flex-grow-1">
-            <div class="row gx-3 gy-3 gy-lg-0 m-0 flex-grow-1 align-items-stretch">
+        <div class="page-content print-main-content container-fluid pt-1 px-2 lg:px-3 pb-3 d-flex flex-column flex-grow-1">
+            <div class="row gx-3 gy-3 lg:gy-0 m-0 flex-grow-1 align-items-stretch">
                 
-                <div class="col-12 px-0 pe-lg-3 d-print-none" :class="isDesktop ? 'col-lg-3' : ''">
+                <div class="col-12 px-0 lg:pe-3 d-print-none" :class="isDesktop ? 'lg:col-3' : ''">
                     <div class="card shadow-sm h-100 mb-0">
                         <div class="card-body p-3 d-flex flex-column">
-                            <div v-if="state.isLoading" class="text-center text-muted mt-4">
-                                <div class="spinner-border spinner-border-sm me-2"></div>{{ t('loading') }}
+                            <div v-if="state.isLoading" class="text-center fg-secondary mt-4">
+                                <div class="spinner-border spinner-sm me-2"></div>{{ t('loading') }}
                             </div>
-                            <div v-else-if="state.error" class="alert alert-danger">{{ state.error }}</div>
+                            <div v-else-if="state.error" class="alert theme-danger">{{ state.error }}</div>
                             <CourseList v-else />
                         </div>
                     </div>
                 </div>
 
-                <div class="col-12 px-0 schedule-grid-col d-flex flex-column" :class="isDesktop ? 'col-lg-6' : ''">
+                <div class="col-12 px-0 schedule-grid-col d-flex flex-column" :class="isDesktop ? 'lg:col-6' : ''">
                     <div class="card shadow-sm h-100 mb-0 schedule-grid-card d-flex flex-column">
-                        <div class="card-body p-2 p-md-3 schedule-grid-body flex-grow-1 d-flex flex-column overflow-auto">
+                        <div class="card-body p-2 md:p-3 schedule-grid-body flex-grow-1 d-flex flex-column overflow-auto">
                             <div v-if="!state.isLoading && !state.error && state.courses.length === 0"
-                                 class="text-center text-muted my-auto py-5">
-                                <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                                 class="text-center fg-secondary my-auto py-5">
+                                <i class="bi bi-inbox text-2xl d-block mb-2"></i>
                                 <p class="mb-0">{{ t('noCoursesAvailable') }}</p>
                             </div>
                             <ScheduleGrid v-else-if="!state.isLoading && !state.error" class="flex-grow-1" />
@@ -131,7 +131,7 @@ onMounted(() => {
                     </div>
                 </div>
 
-                <div v-if="isDesktop" class="col-lg-3 px-0 ps-lg-3 d-print-none">
+                <div v-if="isDesktop" class="lg:col-3 px-0 lg:ps-3 d-print-none">
                     <div class="card shadow-sm h-100 mb-0">
                         <div class="card-body p-3 d-flex flex-column">
                             <MyScheduleList />
@@ -146,7 +146,7 @@ onMounted(() => {
             </button>
 
             <div v-if="isMobile && showMobileSchedule" class="ms-panel d-print-none">
-                <button class="btn btn-sm btn-light float-end" :aria-label="t('close')" @click="showMobileSchedule = false">&times;</button>
+                <button class="btn btn-sm btn-subtle float-end" :aria-label="t('close')" @click="showMobileSchedule = false">&times;</button>
                 <MyScheduleList />
             </div>
         </div>
@@ -163,13 +163,13 @@ onMounted(() => {
 /* Mobile floating chip + panel for "My Schedule" */
 .ms-chip {
     position: fixed; right: 16px; bottom: 16px; z-index: 1040;
-    background: var(--bs-body-bg); border: 1px solid var(--app-accent); color: var(--app-accent);
+    background: var(--bg-body); border: 1px solid var(--app-accent); color: var(--app-accent);
     border-radius: 999px; padding: 8px 14px; font-weight: 700;
     box-shadow: 0 4px 12px rgba(0, 0, 0, .15); cursor: pointer;
 }
 .ms-panel {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 1050;
-    background: var(--bs-body-bg); border-top: 1px solid var(--bs-border-color);
+    background: var(--bg-body); border-top: 1px solid var(--border-color);
     border-radius: 16px 16px 0 0; padding: 16px; max-height: 60vh; overflow: auto;
     box-shadow: 0 -4px 16px rgba(0, 0, 0, .15);
 }

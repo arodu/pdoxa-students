@@ -1,6 +1,6 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 
-export function useBreakpoint(query = '(min-width: 992px)') {
+export function useBreakpoint(query = '(min-width: 1024px)') {
     const matches = ref(false);
     let mql = null;
 

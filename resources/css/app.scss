@@ -1,6 +1,14 @@
-@import 'bootstrap-icons/font/bootstrap-icons.css';
+@use "bootstrap/scss/bootstrap";
 
 :root {
     /* Accent token (Google blue) — used across components, theme-aware */
     --app-accent: #1a73e8;
+}
+
+/* Bootstrap 6.0 alpha dropped the v5 print utilities (`.d-print-*`).
+   Keep the class working so templates don't need to change. */
+@media print {
+    .d-print-none {
+        display: none !important;
+    }
 }

@@ -12,8 +12,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@fontsource/nunito": "^5.2.7",
-    "bootstrap": "^5.3.8",
+    "bootstrap": "6.0.0-alpha.1",
     "bootstrap-icons": "^1.13.1",
     "html-to-image": "^1.11.13",
     "sass": "^1.98.0",

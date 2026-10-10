@@ -50,9 +50,9 @@ const gridAxisLines = computed(() => {
 <template>
     <div class="schedule-container h-100 d-flex flex-column" :style="{ '--num-days': gridSettings.days.length, '--total-slots': gridSettings.totalSlots }">
         
-        <div class="grid-layout grid-header border-bottom border-2 border-dark">
+        <div class="grid-layout grid-header border-bottom border-2 border-emphasized">
             <div class="time-column-header border-end-strict bg-body"></div>
-            <div v-for="day in gridSettings.days" :key="day" class="day-column-header text-center fw-bold py-2 text-primary small border-end-strict">
+            <div v-for="day in gridSettings.days" :key="day" class="day-column-header text-center fw-bold py-2 fg-primary small border-end-strict">
                 {{ day.toUpperCase() }}
             </div>
         </div>
@@ -133,15 +133,15 @@ const gridAxisLines = computed(() => {
     padding-right: 12px; pointer-events: none; 
     transform: translateY(-50%); /* Centra la hora sobre la línea */
 }
-.time-label { font-size: 0.72rem; color: var(--bs-secondary-color); font-weight: 700; background-color: var(--bs-body-bg); padding: 2px 4px; line-height: 1; }
+.time-label { font-size: 0.72rem; color: var(--secondary-fg); font-weight: 700; background-color: var(--bg-body); padding: 2px 4px; line-height: 1; }
 .half-hour-label { font-size: 0.65rem; font-weight: 500; opacity: 0.6; }
 
 .hour-line-container { 
     position: absolute; top: 0; left: 0; right: 0; grid-column: 1; 
     pointer-events: none; z-index: 1; 
 }
-.hour-line { position: absolute; top: 0; left: 0; right: 0; border-top: 1px dashed var(--bs-border-color); width: 100%; }
-.half-hour-line { border-top: 1px dotted var(--bs-border-color); opacity: 0.6; }
+.hour-line { position: absolute; top: 0; left: 0; right: 0; border-top: 1px dashed var(--border-color); width: 100%; }
+.half-hour-line { border-top: 1px dotted var(--border-color); opacity: 0.6; }
 
 /* Blocks: pastel fill + colored left border + dark text (mockup style) */
 .schedule-block {
@@ -161,8 +161,8 @@ const gridAxisLines = computed(() => {
 .cursor-pointer { cursor: pointer; }
 .x-small { font-size: 0.65rem; }
 
-.border-end-strict { border-right: 1px solid var(--bs-border-color) !important; }
-.border-bottom-strict { border-bottom: 1px solid var(--bs-border-color) !important; }
+.border-end-strict { border-right: 1px solid var(--border-color) !important; }
+.border-bottom-strict { border-bottom: 1px solid var(--border-color) !important; }
 
 .grid-header .day-column-header:last-child { border-right: none !important; }
 .grid-body .day-column:last-child { border-right: none !important; }

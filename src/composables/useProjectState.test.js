@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { useProjectState } from './useProjectState.js';
 import { useI18n } from '../i18n/index.js';
+import { encodeSelection } from '../utils/shareCode.js';
 
 const mockRouter = () => ({ replace: vi.fn(() => Promise.resolve()) });
 const STORAGE_KEY = 'schedule_selections_test-slug';
@@ -12,7 +13,7 @@ describe('initializeSync', () => {
     });
 
     it('carga los ids desde el query (URL) como números', () => {
-        const route = { query: { courses: '1,2,3' } };
+        const route = { query: { c: encodeSelection([1, 2, 3]) } };
         const router = mockRouter();
         const { state, initializeSync } = useProjectState();
 
@@ -20,6 +21,16 @@ describe('initializeSync', () => {
 
         expect(state.selectedSectionIds).toEqual([1, 2, 3]);
         expect(router.replace).not.toHaveBeenCalled();
+    });
+
+    it('acepta el param legacy "courses" (CSV crudo)', () => {
+        const route = { query: { courses: '1,2,3' } };
+        const router = mockRouter();
+        const { state, initializeSync } = useProjectState();
+
+        initializeSync(route, router, 'test-slug');
+
+        expect(state.selectedSectionIds).toEqual([1, 2, 3]);
     });
 
     it('carga desde localStorage cuando no hay query y reescribe la URL', () => {
@@ -31,12 +42,12 @@ describe('initializeSync', () => {
         initializeSync(route, router, 'test-slug');
 
         expect(state.selectedSectionIds).toEqual([3, 4]);
-        expect(router.replace).toHaveBeenCalledWith({ query: { courses: '3,4' } });
+        expect(router.replace).toHaveBeenCalledWith({ query: { c: encodeSelection([3, 4]) } });
     });
 
     it('la URL gana sobre localStorage', () => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify([9]));
-        const route = { query: { courses: '1,2' } };
+        const route = { query: { c: encodeSelection([1, 2]) } };
         const router = mockRouter();
         const { state, initializeSync } = useProjectState();
 
@@ -46,7 +57,7 @@ describe('initializeSync', () => {
     });
 
     it('conserva ids no numéricos del query sin descartarlos', () => {
-        const route = { query: { courses: '1,abc,sec-12' } };
+        const route = { query: { c: encodeSelection(['1', 'abc', 'sec-12']) } };
         const router = mockRouter();
         const { state, initializeSync } = useProjectState();
 
@@ -64,7 +75,7 @@ describe('initializeSync', () => {
         initializeSync(route, router, 'test-slug');
 
         expect(state.selectedSectionIds).toEqual(['10', '11']);
-        expect(router.replace).toHaveBeenCalledWith({ query: { courses: '10,11' } });
+        expect(router.replace).toHaveBeenCalledWith({ query: { c: encodeSelection(['10', '11']) } });
     });
 });
 

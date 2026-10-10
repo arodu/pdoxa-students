@@ -11,8 +11,8 @@
 
 <style>
 body {
-    background-color: var(--bs-body-bg);
-    color: var(--bs-body-color);
+    background-color: var(--bg-2);
+    color: var(--fg-body);
     margin: 0;
     padding: 0;
 }

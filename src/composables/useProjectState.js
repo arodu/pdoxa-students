@@ -1,6 +1,7 @@
 import { reactive, readonly, watch } from 'vue';
 import { sameId, normalizeId } from '../utils/ids.js';
 import { normalizeLevel } from '../utils/levels.js';
+import { encodeSelection, decodeSelection } from '../utils/shareCode.js';
 import { useI18n } from '../i18n/index.js';
 
 const isPlainObject = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -94,15 +95,18 @@ export function useProjectState() {
         isInitializing = true;
         const storageKey = `schedule_selections_${slug}`;
 
-        const urlCourses = route.query.courses;
-        let loadedFromUrl = false;
+        // `c` is the encoded selection; `courses` is the legacy (raw CSV) param.
+        const urlSelection = decodeSelection(route.query.c);
+        const legacySelection = route.query.courses
+            ? String(route.query.courses).split(',').map(normalizeId).filter(id => id !== null)
+            : null;
 
-        if (urlCourses) {
-            const ids = String(urlCourses).split(',').map(normalizeId).filter(id => id !== null);
-            if (ids.length > 0) {
-                state.selectedSectionIds.splice(0, state.selectedSectionIds.length, ...ids);
-                loadedFromUrl = true;
-            }
+        let loadedFromUrl = false;
+        const urlIds = (urlSelection && urlSelection.length > 0) ? urlSelection : legacySelection;
+
+        if (urlIds && urlIds.length > 0) {
+            state.selectedSectionIds.splice(0, state.selectedSectionIds.length, ...urlIds);
+            loadedFromUrl = true;
         }
 
         if (!loadedFromUrl) {
@@ -112,7 +116,7 @@ export function useProjectState() {
                     const parsedIds = JSON.parse(savedIds);
                     if (Array.isArray(parsedIds) && parsedIds.length > 0) {
                         state.selectedSectionIds.splice(0, state.selectedSectionIds.length, ...parsedIds);
-                        router.replace({ query: { ...route.query, courses: parsedIds.join(',') } });
+                        router.replace({ query: { ...route.query, c: encodeSelection(parsedIds) } });
                     }
                 } catch (e) {
                     console.error('Error parsing local storage data:', e);
@@ -128,12 +132,13 @@ export function useProjectState() {
             localStorage.setItem(storageKey, JSON.stringify(newIds));
 
             const newQuery = { ...route.query };
+            delete newQuery.courses;
             if (newIds.length > 0) {
-                newQuery.courses = newIds.join(',');
+                newQuery.c = encodeSelection(newIds);
             } else {
-                delete newQuery.courses;
+                delete newQuery.c;
             }
-            
+
             router.replace({ query: newQuery }).catch(err => {
                 if (err.name !== 'NavigationDuplicated') console.error(err);
             });
