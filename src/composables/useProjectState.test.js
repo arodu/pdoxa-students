@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { useProjectState } from './useProjectState.js';
 import { useI18n } from '../i18n/index.js';
 
@@ -71,7 +71,25 @@ describe('initializeSync', () => {
 describe('fetchProjectData', () => {
     beforeEach(() => {
         vi.unstubAllGlobals();
+        vi.stubEnv('VITE_API_BASE_URL', 'https://api.test');
         useI18n().setLocale('es');
+    });
+
+    afterEach(() => {
+        vi.unstubAllEnvs();
+    });
+
+    it('muestra un error de configuración si falta VITE_API_BASE_URL', async () => {
+        vi.stubEnv('VITE_API_BASE_URL', '');
+        const fetchMock = vi.fn();
+        vi.stubGlobal('fetch', fetchMock);
+        const { state, fetchProjectData } = useProjectState();
+
+        await fetchProjectData('slug');
+
+        expect(fetchMock).not.toHaveBeenCalled();
+        expect(state.error).toMatch(/configuraci/i);
+        expect(state.isLoading).toBe(false);
     });
 
     it('normaliza courses/rooms/instructors a arrays y no rompe si faltan', async () => {

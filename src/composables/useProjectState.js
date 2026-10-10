@@ -29,9 +29,15 @@ export function useProjectState() {
     const fetchProjectData = async (slug) => {
         state.isLoading = true;
         state.error = null;
-        
+
+        const apiUrl = import.meta.env.VITE_API_BASE_URL;
+        if (!apiUrl) {
+            state.error = t('errorNoConfig');
+            state.isLoading = false;
+            return;
+        }
+
         try {
-            const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
             const response = await fetch(`${apiUrl}/api/v1/schedule/${slug}`, {
                 method: 'GET',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }

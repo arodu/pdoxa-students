@@ -37,6 +37,7 @@ export const messages = {
         errorServer: 'Server error. Try again later.',
         errorNetwork: 'Could not connect.',
         errorGeneric: 'Could not load the project.',
+        errorNoConfig: 'Backend configuration error.',
     },
     es: {
         homeTitle: 'Armador de Horarios',
@@ -76,5 +77,6 @@ export const messages = {
         errorServer: 'Error del servidor. Intentá más tarde.',
         errorNetwork: 'No se pudo conectar.',
         errorGeneric: 'No se pudo cargar el proyecto.',
+        errorNoConfig: 'Error de configuración del backend.',
     },
 };
