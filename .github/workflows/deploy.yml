@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
       - run: npm ci
       - run: npm run test
@@ -29,6 +29,7 @@ jobs:
         env:
           VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
           VITE_BASE_PATH: /${{ github.event.repository.name }}/
+          VITE_REPO_URL: https://github.com/${{ github.repository }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
