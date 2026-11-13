@@ -28,7 +28,7 @@ La app consume un único endpoint: `GET {VITE_API_BASE_URL}/api/v1/schedule/{slu
 Configurá la base en `.env` (ver `.env.example`):
 
 ```
-VITE_API_BASE_URL=https://demo.arodu.dev/pdoxa
+VITE_API_BASE_URL=https://pdoxa.arodu.dev
 ```
 
 ## Tests

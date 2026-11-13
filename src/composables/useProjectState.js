@@ -39,7 +39,7 @@ export function useProjectState() {
         }
 
         try {
-            const response = await fetch(`${apiUrl}/api/v1/schedule/${slug}`, {
+            const response = await fetch(`/api/v1/public/projects/${slug}/schedule`, {
                 method: 'GET',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
             });
