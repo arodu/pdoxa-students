@@ -37,9 +37,10 @@ export function useProjectState() {
             state.isLoading = false;
             return;
         }
+        const baseUrl = import.meta.env.DEV ? '' : apiUrl;
 
         try {
-            const response = await fetch(`${apiUrl}/api/v1/schedule/${slug}`, {
+            const response = await fetch(`${baseUrl}/api/v1/public/projects/${slug}/schedule`, {
                 method: 'GET',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
             });
