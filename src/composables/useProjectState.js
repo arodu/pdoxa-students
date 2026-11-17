@@ -31,7 +31,7 @@ export function useProjectState() {
         state.isLoading = true;
         state.error = null;
 
-        const apiUrl = import.meta.env.VITE_API_BASE_URL;
+        const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://pdoxa.arodu.dev';
         if (!apiUrl) {
             state.error = t('errorNoConfig');
             state.isLoading = false;
