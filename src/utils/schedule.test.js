@@ -63,11 +63,11 @@ describe('getGridRowPlacement', () => {
 describe('computeGridSettings', () => {
     it('deriva días ordenados y rango horario desde los entries', () => {
         const courses = [
-            course([{ entries: [entry('Miercoles', '08:30', '10:45')] }]),
-            course([{ entries: [entry('Lunes', '08:30', '10:45')] }]),
+            course([{ entries: [entry('Wednesday', '08:30', '10:45')] }]),
+            course([{ entries: [entry('Monday', '08:30', '10:45')] }]),
         ];
         const s = computeGridSettings(courses);
-        expect(s.days).toEqual(['Lunes', 'Miercoles']);
+        expect(s.days).toEqual(['Monday', 'Wednesday']);
         expect(s.startHour).toBe(7);
         expect(s.endHour).toBe(12);
         expect(s.totalMinutes).toBe((12 - 7) * 60);
@@ -76,12 +76,12 @@ describe('computeGridSettings', () => {
 
     it('cae a lunes-viernes cuando no hay entries', () => {
         const s = computeGridSettings([]);
-        expect(s.days).toEqual(['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes']);
+        expect(s.days).toEqual(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
     });
 
     it('tolera entradas mal formadas', () => {
-        const courses = [course([{ entries: [{ day: 'Martes' }] }])];
+        const courses = [course([{ entries: [{ day: 'Tuesday' }] }])];
         const s = computeGridSettings(courses);
-        expect(s.days).toEqual(['Martes']);
+        expect(s.days).toEqual(['Tuesday']);
     });
 });
