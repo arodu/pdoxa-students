@@ -191,22 +191,88 @@ onMounted(() => {
 .export-container { position: absolute; left: -99999px; top: 0; }
 .export-container.export-capturing { position: fixed; left: 0; top: 0; z-index: 99999; background: #fff; }
 
-/* =========================================
-  IMPRESIÓN: solo el ExportSheet
-========================================= */
+
 @media print {
-    @page { size: landscape; margin: 5mm; }
-
-    .schedule-wrapper > *:not(.export-container) { display: none !important; }
-
-    .export-container {
-        position: static !important; left: auto !important; top: auto !important;
-        display: block !important;
+    @page {
+        size: landscape;
+        margin: 5mm;
     }
-    .export-container .export-sheet { width: 100% !important; padding: 0 !important; }
-    .export-container .schedule-container { min-width: 0 !important; }
-    .export-container .grid-body { min-height: 0 !important; }
 
-    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+        width: 1100px !important;
+        height: auto !important;
+    }
+
+    .schedule-wrapper {
+        display: block !important;
+        min-height: 0 !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    .schedule-wrapper > *:not(.export-container) {
+        display: none !important;
+    }
+
+    /* Mirror .export-capturing so layout matches PNG export 1:1 */
+    .export-container {
+        position: static !important;
+        left: 0 !important;
+        top: 0 !important;
+        display: block !important;
+        width: 1100px !important;
+    }
+
+    .export-container .export-sheet {
+        width: 1100px !important;
+        min-width: 1100px !important;
+        max-width: 1100px !important;
+        padding: 16px !important;
+        margin: 0 !important;
+    }
+
+    .export-container .export-body {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-start !important;
+        width: 100% !important;
+    }
+
+    .export-container .export-summary {
+        width: 240px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .export-container .export-grid {
+        flex: 1 1 auto !important;
+        width: 810px !important;
+        min-width: 810px !important;
+    }
+
+    /* Ensure day columns / grid cells keep their positioning context */
+    .export-container .grid-body,
+    .export-container .day-column,
+    .export-container [class*="col"],
+    .export-container [class*="day"] {
+        position: relative !important;
+    }
+
+    .export-container .schedule-container,
+    .export-container .schedule-grid-card,
+    .export-container .schedule-grid-body,
+    .export-container .grid-body {
+        overflow: visible !important;
+        max-height: none !important;
+    }
+
+    /* Note: Keep '*' selector instead of '-' */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
 }
+
 </style>
