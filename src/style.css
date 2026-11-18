@@ -295,7 +295,7 @@ code {
   }
 }
 
-/* FIX VISTA PANTALLA: Bloquea la altura al viewport para forzar el scroll interno */
+
 .schedule-wrapper { 
     height: 100vh; 
     max-height: 100vh;
