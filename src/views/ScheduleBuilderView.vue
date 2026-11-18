@@ -252,14 +252,6 @@ onMounted(() => {
         min-width: 810px !important;
     }
 
-    /* Ensure day columns / grid cells keep their positioning context */
-    .export-container .grid-body,
-    .export-container .day-column,
-    .export-container [class*="col"],
-    .export-container [class*="day"] {
-        position: relative !important;
-    }
-
     .export-container .schedule-container,
     .export-container .schedule-grid-card,
     .export-container .schedule-grid-body,
@@ -268,7 +260,74 @@ onMounted(() => {
         max-height: none !important;
     }
 
-    /* Note: Keep '*' selector instead of '-' */
+    /* =================================================
+       1. SCHEDULE MODULES & COLUMNS (Keep exact size/pos)
+    ================================================= */
+    .export-container .grid-body {
+        display: grid !important;
+        align-items: stretch !important;
+    }
+
+    .export-container .time-column,
+    .export-container .day-column {
+        position: relative !important;
+        display: grid !important;
+        grid-template-rows: repeat(var(--total-slots), minmax(24px, 1fr)) !important;
+    }
+
+    .export-container .schedule-block {
+        position: relative !important;
+        inset: auto !important;
+    }
+
+    /* =================================================
+       2. TIME TEXT & HORIZONTAL LINES
+       Zero-height grid items pinned to the top edge of
+       each row so they never alter row heights and
+       always match the exact start/end of modules.
+    ================================================= */
+    .export-container .time-label-wrapper {
+        position: relative !important;
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        align-self: start !important;
+        height: 0 !important;
+        overflow: visible !important;
+        display: flex !important;
+        justify-content: flex-end !important;
+        align-items: center !important;
+        padding-right: 6px !important;
+        transform: none !important;
+        box-sizing: border-box !important;
+        z-index: 5 !important;
+    }
+
+    .export-container .time-label {
+        background-color: #fff !important;
+        padding: 0 4px !important;
+        line-height: 1 !important;
+    }
+
+    .export-container .hour-line-container {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        align-self: start !important;
+        height: 0 !important;
+        overflow: visible !important;
+        width: 100% !important;
+    }
+
+    .export-container .hour-line {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+    }
+
     * {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
