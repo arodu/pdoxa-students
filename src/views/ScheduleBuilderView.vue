@@ -202,68 +202,97 @@ onMounted(() => {
         margin: 0 !important;
         padding: 0 !important;
         background: #fff !important;
-        width: 1100px !important;
-        height: auto !important;
+        width: 100% !important;
+        height: 190mm !important; /* Fits safely inside A4 (210mm) & Letter (215.9mm) landscape */
+        overflow: hidden !important;
     }
 
     .schedule-wrapper {
         display: block !important;
         min-height: 0 !important;
-        height: auto !important;
-        overflow: visible !important;
+        height: 100% !important;
+        overflow: hidden !important;
     }
 
     .schedule-wrapper > *:not(.export-container) {
         display: none !important;
     }
 
-    /* Mirror .export-capturing so layout matches PNG export 1:1 */
+    /* Lock container to single-page dimensions */
     .export-container {
         position: static !important;
         left: 0 !important;
         top: 0 !important;
-        display: block !important;
-        width: 1100px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        height: 100% !important;
     }
 
     .export-container .export-sheet {
-        width: 1100px !important;
-        min-width: 1100px !important;
-        max-width: 1100px !important;
-        padding: 16px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        height: 100% !important;
+        padding: 8px !important;
         margin: 0 !important;
+        box-sizing: border-box !important;
     }
 
     .export-container .export-body {
         display: flex !important;
         flex-direction: row !important;
-        align-items: flex-start !important;
+        align-items: stretch !important; /* Stretch both columns to full page height */
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
         width: 100% !important;
     }
 
     .export-container .export-summary {
-        width: 240px !important;
+        width: 220px !important;
         flex-shrink: 0 !important;
+        overflow: hidden !important;
     }
 
     .export-container .export-grid {
         flex: 1 1 auto !important;
-        width: 810px !important;
-        min-width: 810px !important;
+        width: auto !important;
+        min-width: 0 !important;
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
 
+    /* Override ScheduleGrid.vue's min-height: 700px */
     .export-container .schedule-container,
     .export-container .schedule-grid-card,
     .export-container .schedule-grid-body,
     .export-container .grid-body {
-        overflow: visible !important;
+        min-height: 0 !important;
         max-height: none !important;
+        overflow: hidden !important;
+    }
+
+    .export-container .schedule-container {
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    /* Compact header so grid gets maximum vertical space */
+    .export-container .grid-header .day-column-header {
+        padding-top: 4px !important;
+        padding-bottom: 4px !important;
     }
 
     /* =================================================
-       1. SCHEDULE MODULES & COLUMNS (Keep exact size/pos)
-    ================================================= */
+       1. SCHEDULE MODULES & COLUMNS (Fit to 1 Page)
+       ================================================= */
     .export-container .grid-body {
+        flex: 1 1 auto !important;
+        height: 100% !important;
         display: grid !important;
         align-items: stretch !important;
     }
@@ -272,20 +301,26 @@ onMounted(() => {
     .export-container .day-column {
         position: relative !important;
         display: grid !important;
-        grid-template-rows: repeat(var(--total-slots), minmax(24px, 1fr)) !important;
+        height: 100% !important;
+        /* Pure 1fr divides available page height equally with no 24px floor */
+        grid-template-rows: repeat(var(--total-slots), minmax(0, 1fr)) !important;
     }
 
     .export-container .schedule-block {
         position: relative !important;
         inset: auto !important;
+        padding: 2px 5px !important;
+        font-size: 0.65rem !important;
+        line-height: 1.05 !important;
+    }
+
+    .export-container .schedule-block .x-small {
+        font-size: 0.58rem !important;
     }
 
     /* =================================================
        2. TIME TEXT & HORIZONTAL LINES
-       Zero-height grid items pinned to the top edge of
-       each row so they never alter row heights and
-       always match the exact start/end of modules.
-    ================================================= */
+       ================================================= */
     .export-container .time-label-wrapper {
         position: relative !important;
         left: auto !important;
@@ -306,6 +341,7 @@ onMounted(() => {
     .export-container .time-label {
         background-color: #fff !important;
         padding: 0 4px !important;
+        font-size: 0.62rem !important;
         line-height: 1 !important;
     }
 
@@ -328,6 +364,7 @@ onMounted(() => {
         width: 100% !important;
     }
 
+    /* Fixed typo: '*' instead of '-' */
     * {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
