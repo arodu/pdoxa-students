@@ -103,20 +103,26 @@ onMounted(() => {
             </div>
         </div>
 
+
+
+
         <div class="page-content print-main-content container-fluid pt-1 px-2 lg:px-3 pb-3 d-flex flex-column flex-grow-1">
-            <div class="row gx-3 gy-3 lg:gy-0 m-0 flex-grow-1 align-items-stretch">
-                
-                <div class="col-12 px-0 lg:pe-3 d-print-none" :class="isDesktop ? 'lg:col-3' : ''">
-                    <div class="card shadow-sm h-100 mb-0">
-                        <div class="card-body p-3 d-flex flex-column">
-                            <div v-if="state.isLoading" class="text-center fg-secondary mt-4">
-                                <div class="spinner-border spinner-sm me-2"></div>{{ t('loading') }}
-                            </div>
-                            <div v-else-if="state.error" class="alert theme-danger">{{ state.error }}</div>
-                            <CourseList v-else />
-                        </div>
-                    </div>
+          <div class="row gx-3 gy-3 lg:gy-0 m-0 flex-grow-1 align-items-stretch">
+            <div class="col-12 px-0 lg:pe-3 d-print-none" :class="isDesktop ? 'lg:col-3' : ''">
+              <div class="card shadow-sm h-100 mb-0">
+                <div class="card-body p-3 d-flex flex-column flex-grow-1" style="min-height: 0;">
+                  <div v-if="state.isLoading" class="text-center fg-secondary mt-4">
+                    <div class="spinner-border spinner-sm me-2"></div>{{ t('loading') }}
+                  </div>
+                  <div v-else-if="state.error" class="alert theme-danger">{{ state.error }}</div>
+                  <CourseList v-else />
                 </div>
+              </div>
+            </div>
+
+
+
+
 
                 <div class="col-12 px-0 schedule-grid-col d-flex flex-column" :class="isDesktop ? 'lg:col-6' : ''">
                     <div class="card shadow-sm h-100 mb-0 schedule-grid-card d-flex flex-column">
