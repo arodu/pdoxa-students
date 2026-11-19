@@ -309,7 +309,7 @@ onMounted(() => {
     .export-container .schedule-block {
         position: relative !important;
         inset: auto !important;
-        padding: 2px 5px !important;
+        padding: 20px 5px !important;
         font-size: 0.65rem !important;
         line-height: 1.05 !important;
     }
