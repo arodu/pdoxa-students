@@ -294,3 +294,13 @@ code {
     border-right-color: var(--border);
   }
 }
+
+
+.schedule-wrapper { 
+    height: 100vh; 
+    max-height: 100vh;
+    display: flex; 
+    flex-direction: column; 
+    padding: 0;
+    overflow: hidden;
+}

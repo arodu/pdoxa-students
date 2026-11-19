@@ -103,20 +103,26 @@ onMounted(() => {
             </div>
         </div>
 
+
+
+
         <div class="page-content print-main-content container-fluid pt-1 px-2 lg:px-3 pb-3 d-flex flex-column flex-grow-1">
-            <div class="row gx-3 gy-3 lg:gy-0 m-0 flex-grow-1 align-items-stretch">
-                
-                <div class="col-12 px-0 lg:pe-3 d-print-none" :class="isDesktop ? 'lg:col-3' : ''">
-                    <div class="card shadow-sm h-100 mb-0">
-                        <div class="card-body p-3 d-flex flex-column">
-                            <div v-if="state.isLoading" class="text-center fg-secondary mt-4">
-                                <div class="spinner-border spinner-sm me-2"></div>{{ t('loading') }}
-                            </div>
-                            <div v-else-if="state.error" class="alert theme-danger">{{ state.error }}</div>
-                            <CourseList v-else />
-                        </div>
-                    </div>
+          <div class="row gx-3 gy-3 lg:gy-0 m-0 flex-grow-1 align-items-stretch">
+            <div class="col-12 px-0 lg:pe-3 d-print-none" :class="isDesktop ? 'lg:col-3' : ''">
+              <div class="card shadow-sm h-100 mb-0">
+                <div class="card-body p-3 d-flex flex-column flex-grow-1" style="min-height: 0;">
+                  <div v-if="state.isLoading" class="text-center fg-secondary mt-4">
+                    <div class="spinner-border spinner-sm me-2"></div>{{ t('loading') }}
+                  </div>
+                  <div v-else-if="state.error" class="alert theme-danger">{{ state.error }}</div>
+                  <CourseList v-else />
                 </div>
+              </div>
+            </div>
+
+
+
+
 
                 <div class="col-12 px-0 schedule-grid-col d-flex flex-column" :class="isDesktop ? 'lg:col-6' : ''">
                     <div class="card shadow-sm h-100 mb-0 schedule-grid-card d-flex flex-column">
@@ -185,22 +191,185 @@ onMounted(() => {
 .export-container { position: absolute; left: -99999px; top: 0; }
 .export-container.export-capturing { position: fixed; left: 0; top: 0; z-index: 99999; background: #fff; }
 
-/* =========================================
-  IMPRESIÓN: solo el ExportSheet
-========================================= */
+
 @media print {
-    @page { size: landscape; margin: 5mm; }
-
-    .schedule-wrapper > *:not(.export-container) { display: none !important; }
-
-    .export-container {
-        position: static !important; left: auto !important; top: auto !important;
-        display: block !important;
+    @page {
+        size: landscape;
+        margin: 5mm;
     }
-    .export-container .export-sheet { width: 100% !important; padding: 0 !important; }
-    .export-container .schedule-container { min-width: 0 !important; }
-    .export-container .grid-body { min-height: 0 !important; }
 
-    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+        width: 100% !important;
+        height: 190mm !important; /* Fits safely inside A4 (210mm) & Letter (215.9mm) landscape */
+        overflow: hidden !important;
+    }
+
+    .schedule-wrapper {
+        display: block !important;
+        min-height: 0 !important;
+        height: 100% !important;
+        overflow: hidden !important;
+    }
+
+    .schedule-wrapper > *:not(.export-container) {
+        display: none !important;
+    }
+
+    /* Lock container to single-page dimensions */
+    .export-container {
+        position: static !important;
+        left: 0 !important;
+        top: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .export-container .export-sheet {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        height: 100% !important;
+        padding: 8px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .export-container .export-body {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: stretch !important; /* Stretch both columns to full page height */
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        width: 100% !important;
+    }
+
+    .export-container .export-summary {
+        width: 220px !important;
+        flex-shrink: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .export-container .export-grid {
+        flex: 1 1 auto !important;
+        width: auto !important;
+        min-width: 0 !important;
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    /* Override ScheduleGrid.vue's min-height: 700px */
+    .export-container .schedule-container,
+    .export-container .schedule-grid-card,
+    .export-container .schedule-grid-body,
+    .export-container .grid-body {
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: clip !important;
+        overflow-clip-margin: 10px !important;
+    }
+
+    .export-container .schedule-container {
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    /* Compact header so grid gets maximum vertical space */
+    .export-container .grid-header .day-column-header {
+        padding-top: 4px !important;
+        padding-bottom: 4px !important;
+    }
+
+    /* =================================================
+       1. SCHEDULE MODULES & COLUMNS (Fit to 1 Page)
+       ================================================= */
+    .export-container .grid-body {
+        flex: 1 1 auto !important;
+        height: 100% !important;
+        display: grid !important;
+        align-items: stretch !important;
+    }
+
+    .export-container .time-column,
+    .export-container .day-column {
+        position: relative !important;
+        display: grid !important;
+        height: 100% !important;
+        /* Pure 1fr divides available page height equally with no 24px floor */
+        grid-template-rows: repeat(var(--total-slots), minmax(0, 1fr)) !important;
+    }
+
+    .export-container .schedule-block {
+        position: relative !important;
+        inset: auto !important;
+        padding: 20px 5px !important;
+        font-size: 0.65rem !important;
+        line-height: 1.05 !important;
+    }
+
+    .export-container .schedule-block .x-small {
+        font-size: 0.58rem !important;
+    }
+
+    /* =================================================
+       2. TIME TEXT & HORIZONTAL LINES
+       ================================================= */
+    .export-container .time-label-wrapper {
+        position: relative !important;
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        align-self: start !important;
+        height: 0 !important;
+        overflow: visible !important;
+        display: flex !important;
+        justify-content: flex-end !important;
+        align-items: center !important;
+        padding-right: 6px !important;
+        transform: none !important;
+        box-sizing: border-box !important;
+        z-index: 5 !important;
+    }
+
+    .export-container .time-label {
+        background-color: #fff !important;
+        padding: 0 4px !important;
+        font-size: 0.62rem !important;
+        line-height: 1 !important;
+    }
+
+    .export-container .hour-line-container {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        align-self: start !important;
+        height: 0 !important;
+        overflow: visible !important;
+        width: 100% !important;
+    }
+
+    .export-container .hour-line {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+    }
+
+    /* Fixed typo: '*' instead of '-' */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
 }
+
 </style>

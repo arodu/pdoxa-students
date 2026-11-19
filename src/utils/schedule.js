@@ -2,7 +2,7 @@ export const SLOT_DURATION = 5;
 export const MINUTES_PER_HOUR = 60;
 export const ROWS_PER_HOUR = MINUTES_PER_HOUR / SLOT_DURATION;
 
-const DAY_ORDER = {
+/*const DAY_ORDER = {
     Monday: 1,
     Tuesday: 2,
     Wednesday: 3,
@@ -10,9 +10,20 @@ const DAY_ORDER = {
     Friday: 5,
     Saturday: 6,
     Sunday: 7,
-};
+};*/
 
 const DEFAULT_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+const DAY_ORDER = {
+    // Inglés
+    monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6, sunday: 7,
+    // Español
+    lunes: 1, martes: 2, miercoles: 3, jueves: 4, viernes: 5, sabado: 6, domingo: 7,
+    // Numerico
+    1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7,
+    "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7,
+};
+
 
 export const timeToMinutes = (timeStr) => {
     if (!timeStr) return 0;
@@ -43,8 +54,17 @@ export const getGridRowPlacement = (startTime, endTime, startH) => {
     return `${start} / ${safeEnd}`;
 };
 
-export const sortDays = (days) =>
-    [...days].sort((a, b) => (DAY_ORDER[a] || 99) - (DAY_ORDER[b] || 99));
+export const sortDays = (days) => {
+    return [...days].sort((a, b) => {
+        const normalize = (str) => 
+            str ? str.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim() : "";
+
+        const keyA = normalize(a);
+        const keyB = normalize(b);
+
+        return (DAY_ORDER[keyA] || 99) - (DAY_ORDER[keyB] || 99);
+    });
+};
 
 export const computeGridSettings = (courses) => {
     const daysSet = new Set();

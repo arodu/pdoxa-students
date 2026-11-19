@@ -93,7 +93,7 @@ const handleSectionSelect = (course, section) => {
 </script>
 
 <template>
-    <div class="course-selector-wrapper d-flex flex-column h-100">
+    <div class="course-selector-wrapper">
 
         <div class="selection-area mb-3">
             <h6 class="text-uppercase fg-secondary fw-bold mb-3 small">{{ t('findCourses') }}</h6>
@@ -166,12 +166,13 @@ const handleSectionSelect = (course, section) => {
 </template>
 
 <style scoped>
-.course-selector-wrapper { max-height: calc(100vh - 160px); }
+/* Reducimos lo que se resta para que baje más y ocupe el tamaño real de la página */
+.course-selector-wrapper { max-height: calc(100vh); }
 .cursor-pointer { cursor: pointer; }
 .transition-all { transition: all 0.2s ease; }
 .x-small { font-size: 0.7rem; }
 .level-heading { font-size: 0.68rem; letter-spacing: .03em; margin-bottom: 4px; }
-.course-list { max-height: calc(100vh - 260px); }
+.course-list { max-height: calc(100vh - 150px); }
 
 .course-item {
     background-color: var(--bg-2);
