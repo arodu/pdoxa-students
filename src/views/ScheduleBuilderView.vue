@@ -272,7 +272,8 @@ onMounted(() => {
     .export-container .grid-body {
         min-height: 0 !important;
         max-height: none !important;
-        overflow: hidden !important;
+        overflow: clip !important;
+        overflow-clip-margin: 10px !important;
     }
 
     .export-container .schedule-container {
